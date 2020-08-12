@@ -1,0 +1,63 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Debug (Launch) - Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-Aleatorio<ExemplosCodigoJava_a232c50f>",
+            "request": "launch",
+            "mainClass": "Aleatorio",
+            "projectName": "ExemplosCodigoJava_a232c50f"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-NumeroProcessadores<ExemplosCodigoJava_a232c50f>",
+            "request": "launch",
+            "mainClass": "NumeroProcessadores",
+            "projectName": "ExemplosCodigoJava_a232c50f"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-TempoSistema<ExemplosCodigoJava_a232c50f>",
+            "request": "launch",
+            "mainClass": "TempoSistema",
+            "projectName": "ExemplosCodigoJava_a232c50f"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-Teste01<ExemplosCodigoJava_a232c50f>",
+            "request": "launch",
+            "mainClass": "Teste01",
+            "projectName": "ExemplosCodigoJava_a232c50f"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-Teste02<ExemplosCodigoJava_a232c50f>",
+            "request": "launch",
+            "mainClass": "Teste02",
+            "projectName": "ExemplosCodigoJava_a232c50f"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-Teste03<ExemplosCodigoJava_a232c50f>",
+            "request": "launch",
+            "mainClass": "Teste03",
+            "projectName": "ExemplosCodigoJava_a232c50f"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-Teste04<ExemplosCodigoJava_a232c50f>",
+            "request": "launch",
+            "mainClass": "Teste04",
+            "projectName": "ExemplosCodigoJava_a232c50f"
+        }
+    ]
+}
