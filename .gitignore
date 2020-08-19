@@ -40,6 +40,6 @@ hs_err_pid*
 .history
 
 ### Ignore pdf files from class
-.pdf
+*.pdf
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,java
