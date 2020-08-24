@@ -19,19 +19,43 @@ public class Aplicacao {
         Semaphore itens_transp = new Semaphore(0);
         Semaphore espacos_transp = new Semaphore(100);
 
-        Loja la = new Loja('A', pedido_compra, mtx_compra, itens_compra, espacos_compra);
-        la.setName("LojaA");
+        Loja lA = new Loja('A', pedido_compra, mtx_compra, itens_compra, espacos_compra);
+        Loja lB = new Loja('B', pedido_compra, mtx_compra, itens_compra, espacos_compra);
+        Loja lC = new Loja('C', pedido_compra, mtx_compra, itens_compra, espacos_compra);
+        Loja lD = new Loja('D', pedido_compra, mtx_compra, itens_compra, espacos_compra);
+        Loja lE = new Loja('E', pedido_compra, mtx_compra, itens_compra, espacos_compra);
+        Loja lF = new Loja('F', pedido_compra, mtx_compra, itens_compra, espacos_compra);
+        Loja lG = new Loja('G', pedido_compra, mtx_compra, itens_compra, espacos_compra);
+        Loja lH = new Loja('H', pedido_compra, mtx_compra, itens_compra, espacos_compra);
 
-        Fabricante fd = new Fabricante('D', 4, pedido_compra, mtx_compra, itens_compra, espacos_compra, pedido_transp,
+        Fabricante fA = new Fabricante('A', 4, pedido_compra, mtx_compra, itens_compra, espacos_compra, pedido_transp,
                 mtx_transp, itens_transp, espacos_transp);
-        fd.setName("FabD");
+        Fabricante fB = new Fabricante('B', 1, pedido_compra, mtx_compra, itens_compra, espacos_compra, pedido_transp,
+                mtx_transp, itens_transp, espacos_transp);
+        Fabricante fC = new Fabricante('C', 4, pedido_compra, mtx_compra, itens_compra, espacos_compra, pedido_transp,
+                mtx_transp, itens_transp, espacos_transp);
+        Fabricante fD = new Fabricante('D', 4, pedido_compra, mtx_compra, itens_compra, espacos_compra, pedido_transp,
+                mtx_transp, itens_transp, espacos_transp);
 
-        Transportadora ta = new Transportadora(pedido_transp, mtx_transp, itens_transp, espacos_transp, 10);
-        ta.setName("TranspA");
+        Transportadora tA = new Transportadora(pedido_transp, mtx_transp, itens_transp, espacos_transp, 10);
+        Transportadora tB = new Transportadora(pedido_transp, mtx_transp, itens_transp, espacos_transp, 20);
 
-        la.start();
-        fd.start();
-        ta.start();
+        lA.start();
+        lB.start();
+        lC.start();
+        lD.start();
+        lE.start();
+        lF.start();
+        lG.start();
+        lH.start();
+
+        fA.start();
+        fB.start();
+        fC.start();
+        fD.start();
+
+        tA.start();
+        tB.start();
 
     }
 }
