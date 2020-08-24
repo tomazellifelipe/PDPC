@@ -2,6 +2,7 @@ import java.util.concurrent.Semaphore;
 
 public class Transportadora extends Thread {
     private int capacidade;
+    char id_transp;
 
     private Produto[] pedido_transp;
     private Semaphore mtx_transp, itens_transp, espacos_transp;
@@ -10,7 +11,8 @@ public class Transportadora extends Thread {
     private int[] entrega_idx = { 0, 0 };
     private Semaphore mtx_entrega, itens_entrega, espacos_entrega;
 
-    public Transportadora(Produto[] consumer_array, Semaphore mutex, Semaphore itens, Semaphore espacos, int capacity) {
+    public Transportadora(char id_transp, Produto[] consumer_array, Semaphore mutex, Semaphore itens, Semaphore espacos,
+            int capacity) {
         /**
          * @param consumer_array: consumer output array
          * @param mutex:          consumer mutex;
@@ -19,6 +21,7 @@ public class Transportadora extends Thread {
          *                        products_array
          * @param capacity:       consumer parallel capacity
          */
+        this.id_transp = id_transp;
         this.pedido_transp = consumer_array;
         this.mtx_transp = mutex;
         this.itens_transp = itens;
@@ -55,7 +58,7 @@ public class Transportadora extends Thread {
         espacos_entrega = new Semaphore(capacidade);
 
         for (int i = 0; i < entrega.length; i++) {
-            new Entrega(entrega, entrega_idx, mtx_entrega, itens_entrega, espacos_entrega).start();
+            new Entrega(id_transp, entrega, entrega_idx, mtx_entrega, itens_entrega, espacos_entrega).start();
         }
     }
 

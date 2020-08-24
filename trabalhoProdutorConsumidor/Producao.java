@@ -1,4 +1,3 @@
-import java.util.Random;
 import java.util.concurrent.Semaphore;
 
 public class Producao extends Thread {
@@ -42,7 +41,6 @@ public class Producao extends Thread {
     }
 
     public void run() {
-        Random r = new Random();
         try {
             while (true) {
                 itens_prod.acquire();
@@ -51,7 +49,7 @@ public class Producao extends Thread {
                 producao_idx[0] = (producao_idx[0] + 1) % linha_prod.length;
                 mtx_prod.release();
                 System.out.println(id_fabricante + " Produzindo: " + k.getid_produto() + k.getid_venda());
-                Thread.sleep(r.nextInt(5000));
+                Timer.timer(k.getid_produto(), id_fabricante);
                 System.out.println(id_fabricante + " Finalizou: " + k.getid_produto() + k.getid_venda());
                 espacos_prod.release();
                 espacos_transp.acquire(); // verifica se ha espaco para transporte pedido_transp[100]

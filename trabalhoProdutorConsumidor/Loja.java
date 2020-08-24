@@ -43,7 +43,7 @@ public class Loja extends Thread {
                     vendas++;
 
                 } while (vendas < 2);
-                Thread.sleep(r.nextInt(2000));
+                Timer.dormir(10, 150);
                 vendas = 0;
             }
         } catch (Exception e) {
