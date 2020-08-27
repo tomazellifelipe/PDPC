@@ -85,7 +85,8 @@ public class Fabricante extends Thread {
     private Produto producao() throws Exception {
         Produto item = pedido_compra[Aplicacao.compra_primeiro];
         Aplicacao.compra_primeiro = (Aplicacao.compra_primeiro + 1) % pedido_compra.length;
-        System.out.println("Fabricante: " + id_fabricante + " Producao: " + item.getid_produto() + item.getid_venda());
+        // System.out.println("Fabricante: " + id_fabricante + " Producao: " +
+        // item.getid_produto() + item.getid_venda());
         return item;
     }
 

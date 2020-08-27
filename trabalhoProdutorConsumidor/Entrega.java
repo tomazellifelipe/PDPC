@@ -33,7 +33,9 @@ public class Entrega extends Thread {
                 entrega_idx[0] = (entrega_idx[0] + 1) % entrega.length;
                 mtx_entrega.release();
                 Timer.deliverytimer(id_transp);
-                System.out.println("Finalizando entrega de: " + k.getid_produto() + k.getid_venda());
+                System.out.println("Delivery Time: " + (System.currentTimeMillis() - k.getstartTime()));
+                // System.out.println("Finalizando entrega de: " + k.getid_produto() +
+                // k.getid_venda());
                 espacos_entrega.release();
 
             }
