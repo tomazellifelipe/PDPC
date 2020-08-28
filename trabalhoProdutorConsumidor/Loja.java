@@ -53,11 +53,9 @@ public class Loja extends Thread {
     }
 
     private void compra(Random r) throws Exception {
-        Produto item = new Produto(catalogo[r.nextInt(8)], ++total_vendas, System.currentTimeMillis());
+        Produto item = new Produto(catalogo[r.nextInt(8)], id_loja, ++total_vendas, System.currentTimeMillis());
         pedido_compra[Aplicacao.compra_ultimo] = item;
         Aplicacao.compra_ultimo = (Aplicacao.compra_ultimo + 1) % pedido_compra.length;
-        // System.out.println("Loja: " + id_loja + " Pedido: " + item.getid_produto() +
-        // item.getid_venda());
 
     }
 

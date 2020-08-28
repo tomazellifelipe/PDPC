@@ -1,12 +1,14 @@
 public class Produto {
     private char id_produto;
+    private char id_loja;
     private int id_venda;
     private long startTime;
 
-    public Produto(char id_produto, int id_venda, long miliseconds) {
+    public Produto(char id_produto, char id_loja, int id_venda, long miliseconds) {
         this.id_produto = id_produto;
         this.id_venda = id_venda;
         this.startTime = miliseconds;
+        this.id_loja = id_loja;
 
     }
 

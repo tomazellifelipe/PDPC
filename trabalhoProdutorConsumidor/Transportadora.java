@@ -65,7 +65,6 @@ public class Transportadora extends Thread {
     private Produto entrega() {
         Produto k = pedido_transp[Aplicacao.transp_primeiro];
         Aplicacao.transp_primeiro = (Aplicacao.transp_primeiro + 1) % pedido_transp.length;
-        // System.out.println("Transportando: " + k.getid_produto() + k.getid_venda());
         return k;
     }
 

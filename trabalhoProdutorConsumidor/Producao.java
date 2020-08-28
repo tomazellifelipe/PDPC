@@ -1,3 +1,7 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.concurrent.Semaphore;
 
 public class Producao extends Thread {
@@ -48,13 +52,10 @@ public class Producao extends Thread {
                 Produto k = linha_prod[producao_idx[0]];
                 producao_idx[0] = (producao_idx[0] + 1) % linha_prod.length;
                 mtx_prod.release();
-                // System.out.println(id_fabricante + " Produzindo: " + k.getid_produto() +
-                // k.getid_venda());
                 Timer.timer(k.getid_produto(), id_fabricante);
-                System.out.println("Production time: " + (System.currentTimeMillis() - k.getstartTime()));
+                long currentTime = System.currentTimeMillis() - k.getstartTime();
+                escrever(currentTime);
                 k.setstartTime(System.currentTimeMillis());
-                // System.out.println(id_fabricante + " Finalizou: " + k.getid_produto() +
-                // k.getid_venda());
                 espacos_prod.release();
                 espacos_transp.acquire(); // verifica se ha espaco para transporte pedido_transp[100]
                 mtx_transp.acquire();
@@ -66,6 +67,18 @@ public class Producao extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+    }
+
+    public void escrever(long tempoProducao) throws IOException {
+        FileWriter fw = new FileWriter("tempoProducao.txt", true);
+        BufferedWriter bw = new BufferedWriter(fw);
+        PrintWriter pw = new PrintWriter(bw);
+        pw.println(tempoProducao);
+        pw.flush();
+        pw.close();
+        bw.close();
+        fw.close();
 
     }
 
