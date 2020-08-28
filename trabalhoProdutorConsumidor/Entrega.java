@@ -1,3 +1,7 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.concurrent.Semaphore;
 
 public class Entrega extends Thread {
@@ -33,15 +37,26 @@ public class Entrega extends Thread {
                 entrega_idx[0] = (entrega_idx[0] + 1) % entrega.length;
                 mtx_entrega.release();
                 Timer.deliverytimer(id_transp);
-                System.out.println("Delivery Time: " + (System.currentTimeMillis() - k.getstartTime()));
-                // System.out.println("Finalizando entrega de: " + k.getid_produto() +
-                // k.getid_venda());
+                long currentTime = System.currentTimeMillis() - k.getstartTime();
+                escrever(currentTime);
                 espacos_entrega.release();
 
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void escrever(long tempoEntrega) throws IOException {
+        FileWriter fw = new FileWriter("tempoEntrega.txt", true);
+        BufferedWriter bw = new BufferedWriter(fw);
+        PrintWriter pw = new PrintWriter(bw);
+        pw.println(tempoEntrega);
+        pw.flush();
+        pw.close();
+        bw.close();
+        fw.close();
+
     }
 
 }
