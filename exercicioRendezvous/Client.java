@@ -5,7 +5,6 @@ public class Client extends Thread {
     private Semaphore[] clients_line;
     private Semaphore client, client_pass, clienteSatisfeito, corteConcluido;
     private Semaphore mutex;
-
     private int[] clients_counter;
 
     public Client(Semaphore[] clients_line, Semaphore mutex, Semaphore client, Semaphore clienteSatisfeito,
@@ -23,26 +22,27 @@ public class Client extends Thread {
     public void run() {
         try {
             mutex.acquire();
-            if (clients_counter[0] == BarberShop.MAX_CLIENTS) {
+            if (clients_counter[0] < BarberShop.MAX_CLIENTS) {
+                clients_counter[0]++;
+                join_line();
+                mutex.release();
+
+                client.release();
+                client_pass.acquire();
+
+                terCabeloCortado();
+
+                clienteSatisfeito.release();
+                corteConcluido.acquire();
+
+                mutex.acquire();
+                clients_counter[0]--;
+                System.out.println("Concluido");
+                mutex.release();
+            } else {
                 mutex.release();
                 desistir();
             }
-            clients_counter[0]++;
-            join_line();
-            mutex.release();
-
-            client.release();
-            client_pass.acquire();
-
-            terCabeloCortado();
-
-            clienteSatisfeito.release();
-            corteConcluido.acquire();
-
-            mutex.acquire();
-            clients_counter[0]--;
-            System.out.println("Concluido");
-            mutex.release();
 
         } catch (Exception e) {
             e.printStackTrace();
