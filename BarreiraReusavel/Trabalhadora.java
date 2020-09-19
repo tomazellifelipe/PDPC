@@ -4,21 +4,21 @@ import java.util.*;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 
-public class Trabalhadora extends Thread implements Serializable {
+public class Trabalhadora extends Thread {
 
-    private final int MAX_LIST_SIZE;
-    private int fileNumber = 0;
-    private int idTrabalhadora;
-    private ArrayList<Integer> numIntList = new ArrayList<Integer>();
-    private ArrayList<String> stringFileList;
+    private final int MAX_TAMANHO_LISTA;
+    private int numeroDoArquivo = 0;
+    private int idDaTrabalhadora;
+    private ArrayList<Integer> listaDeInts = new ArrayList<Integer>();
+    private ArrayList<String> listaDeArquivos;
     private Semaphore mutex, barreiraEntrada, barreiraSaída;
     private Random r = new Random();
 
     public Trabalhadora(int id, int listSize, ArrayList<String> filesList, Semaphore mutex, Semaphore barreiraEntrada,
             Semaphore barreiraSaida) {
-        this.idTrabalhadora = id;
-        this.MAX_LIST_SIZE = listSize;
-        this.stringFileList = filesList;
+        this.idDaTrabalhadora = id;
+        this.MAX_TAMANHO_LISTA = listSize;
+        this.listaDeArquivos = filesList;
         this.mutex = mutex;
         this.barreiraEntrada = barreiraEntrada;
         this.barreiraSaída = barreiraSaida;
@@ -28,59 +28,50 @@ public class Trabalhadora extends Thread implements Serializable {
         return r.nextInt(bound + 1);
     }
 
-    private void addIntToList(int maxListSize) {
+    private void addIntNaLista(int maxListSize) {
         for (int i = 0; i < maxListSize; i++) {
-            this.numIntList.add(gerarInt((int) Math.pow(10, 7)));
+            this.listaDeInts.add(gerarInt((int) Math.pow(10, 7)));
         }
         return;
     }
 
-    private void sortList(ArrayList<Integer> list) {
+    private void sortLista(ArrayList<Integer> list) {
         Collections.sort(list);
         return;
     }
 
-    private void salvar(String nomeDoArquivo) throws IOException {
-        FileOutputStream arquivo = new FileOutputStream(nomeDoArquivo);
-        ObjectOutputStream gravador = new ObjectOutputStream(arquivo);
-        gravador.writeObject(this.numIntList);
-        gravador.close();
-        arquivo.close();
-    }
-
     private String criarArquivo() throws IOException {
-        String fileName = "ArrayListFile" + fileNumber + "_" + idTrabalhadora + ".ser";
-        salvar(fileName);
-        fileNumber++;
-        return fileName;
+        String nomeDoArquivo = "ArrayListFile" + numeroDoArquivo + "_" + idDaTrabalhadora + ".ser";
+        ManipularArquivo.salvar(nomeDoArquivo, listaDeInts);
+        numeroDoArquivo++;
+        return nomeDoArquivo;
     }
 
     public void run() {
         try {
             while (true) {
-                addIntToList(MAX_LIST_SIZE);
-                sortList(this.numIntList);
-                String fileName = criarArquivo();
+                addIntNaLista(MAX_TAMANHO_LISTA);
+                sortLista(this.listaDeInts);
+                String nomeDoArquivo = criarArquivo();
                 mutex.acquire();
                 Main.contador++;
-                if (Main.contador == Main.MAX_TRABALHADORA) {
-                    barreiraSaída.acquire();
-                    barreiraEntrada.release();
+                if (Main.contador == Main.MAX_TRABALHADORAS) {
+                    barreiraSaída.acquire(); // fecha
+                    barreiraEntrada.release(); // abre
                 }
                 mutex.release();
                 barreiraEntrada.acquire();
+                listaDeArquivos.add(nomeDoArquivo); // insere o nome do arquivo na lista de arquivos
                 barreiraEntrada.release();
-                mutex.acquire();
-                stringFileList.add(fileName); // insere o nome do arquivo na lista de arquivos
-                mutex.release();
                 mutex.acquire();
                 Main.contador--;
                 if (Main.contador == 0) {
-                    barreiraEntrada.acquire();
-                    barreiraSaída.release();
+                    barreiraEntrada.acquire(); // fecha
+                    barreiraSaída.release(); // abre
                 }
                 mutex.release();
                 barreiraSaída.acquire();
+
                 barreiraSaída.release();
             }
         } catch (Exception e) {
