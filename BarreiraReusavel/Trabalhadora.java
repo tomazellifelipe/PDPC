@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.io.*;
 import java.util.*;
 import java.util.Random;
@@ -11,17 +10,18 @@ public class Trabalhadora extends Thread {
     private int idDaTrabalhadora;
     private ArrayList<Integer> listaDeInts = new ArrayList<Integer>();
     private ArrayList<String> listaDeArquivos;
-    private Semaphore mutex, barreiraEntrada, barreiraSaída;
+    private Semaphore mutex, barreiraEntrada, barreiraSaída, semCombinadora;
     private Random r = new Random();
 
     public Trabalhadora(int id, int listSize, ArrayList<String> filesList, Semaphore mutex, Semaphore barreiraEntrada,
-            Semaphore barreiraSaida) {
+            Semaphore barreiraSaida, Semaphore semCombinadora) {
         this.idDaTrabalhadora = id;
         this.MAX_TAMANHO_LISTA = listSize;
         this.listaDeArquivos = filesList;
         this.mutex = mutex;
         this.barreiraEntrada = barreiraEntrada;
         this.barreiraSaída = barreiraSaida;
+        this.semCombinadora = semCombinadora;
     }
 
     private int gerarInt(int bound) {
@@ -41,8 +41,9 @@ public class Trabalhadora extends Thread {
     }
 
     private String criarArquivo() throws IOException {
-        String nomeDoArquivo = "ArrayListFile" + numeroDoArquivo + "_" + idDaTrabalhadora + ".ser";
+        String nomeDoArquivo = "ArquivoTrabDeInts" + numeroDoArquivo + "_" + idDaTrabalhadora + ".ser";
         ManipularArquivo.salvar(nomeDoArquivo, listaDeInts);
+        System.out.println("Arquivo criado com sucesso");
         numeroDoArquivo++;
         return nomeDoArquivo;
     }
@@ -67,11 +68,11 @@ public class Trabalhadora extends Thread {
                 Main.contador--;
                 if (Main.contador == 0) {
                     barreiraEntrada.acquire(); // fecha
+                    semCombinadora.release();
                     barreiraSaída.release(); // abre
                 }
                 mutex.release();
                 barreiraSaída.acquire();
-
                 barreiraSaída.release();
             }
         } catch (Exception e) {
