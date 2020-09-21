@@ -1,24 +1,23 @@
 import java.io.*;
-import java.util.ArrayList;
 
 public class ManipularArquivo implements Serializable {
 
-    public static void salvar(String nomeDoArquivo, ArrayList<Integer> dados) throws IOException {
-        FileOutputStream arquivo = new FileOutputStream(nomeDoArquivo);
+    public static void salvar(String nome, ListaDeInteiros objeto) throws IOException {
+        FileOutputStream arquivo = new FileOutputStream(nome);
         ObjectOutputStream gravador = new ObjectOutputStream(arquivo);
-        gravador.writeObject(dados);
+        gravador.writeObject(objeto);
         gravador.close();
         arquivo.close();
     }
 
-    public static ArrayList<Integer> abrir(String nomeDoArquivo) throws IOException, ClassNotFoundException {
-        ArrayList<Integer> listaDeInts = null;
+    public static ListaDeInteiros abrir(String nomeDoArquivo) throws IOException, ClassNotFoundException {
+        ListaDeInteiros output = null;
         FileInputStream arquivo = new FileInputStream(nomeDoArquivo);
         ObjectInputStream restaurador = new ObjectInputStream(arquivo);
-        listaDeInts = (ArrayList<Integer>) restaurador.readObject();
+        output = (ListaDeInteiros) restaurador.readObject();
         restaurador.close();
         arquivo.close();
-        return listaDeInts;
+        return output;
     }
 
 }

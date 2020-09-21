@@ -1,59 +1,29 @@
 import java.io.*;
 import java.util.*;
-import java.util.Random;
 import java.util.concurrent.Semaphore;
 
 public class Trabalhadora extends Thread {
 
-    private final int MAX_TAMANHO_LISTA;
-    private int numeroDoArquivo = 0;
-    private int idDaTrabalhadora;
-    private ArrayList<Integer> listaDeInts = new ArrayList<Integer>();
     private ArrayList<String> listaDeArquivos;
     private Semaphore mutex, barreiraEntrada, barreiraSaída, semCombinadora;
-    private Random r = new Random();
 
-    public Trabalhadora(int id, int listSize, ArrayList<String> filesList, Semaphore mutex, Semaphore barreiraEntrada,
-            Semaphore barreiraSaida, Semaphore semCombinadora) {
-        this.idDaTrabalhadora = id;
-        this.MAX_TAMANHO_LISTA = listSize;
-        this.listaDeArquivos = filesList;
+    public Trabalhadora(ArrayList<String> lista, Semaphore mutex, Semaphore barreiraEntrada, Semaphore barreiraSaida,
+            Semaphore semCombinadora) {
+        this.listaDeArquivos = lista;
         this.mutex = mutex;
         this.barreiraEntrada = barreiraEntrada;
         this.barreiraSaída = barreiraSaida;
         this.semCombinadora = semCombinadora;
     }
 
-    private int gerarInt(int bound) {
-        return r.nextInt(bound + 1);
-    }
-
-    private void addIntNaLista(int maxListSize) {
-        for (int i = 0; i < maxListSize; i++) {
-            this.listaDeInts.add(gerarInt((int) Math.pow(10, 7)));
-        }
-        return;
-    }
-
-    private void sortLista(ArrayList<Integer> list) {
-        Collections.sort(list);
-        return;
-    }
-
-    private String criarArquivo() throws IOException {
-        String nomeDoArquivo = "ArquivoTrabDeInts" + numeroDoArquivo + "_" + idDaTrabalhadora + ".ser";
-        ManipularArquivo.salvar(nomeDoArquivo, listaDeInts);
-        System.out.println("Arquivo criado com sucesso");
-        numeroDoArquivo++;
-        return nomeDoArquivo;
-    }
-
     public void run() {
         try {
             while (true) {
-                addIntNaLista(MAX_TAMANHO_LISTA);
-                sortLista(this.listaDeInts);
-                String nomeDoArquivo = criarArquivo();
+                ListaDeInteiros lista = new ListaDeInteiros();
+                lista.popular();
+                lista.ordenar();
+                String nome = criarArquivo(lista);
+                System.out.println("Arquivo criado por: " + this.getName());
                 mutex.acquire();
                 Main.contador++;
                 if (Main.contador == Main.MAX_TRABALHADORAS) {
@@ -62,13 +32,14 @@ public class Trabalhadora extends Thread {
                 }
                 mutex.release();
                 barreiraEntrada.acquire();
-                listaDeArquivos.add(nomeDoArquivo); // insere o nome do arquivo na lista de arquivos
+                listaDeArquivos.add(nome); // insere o nome do arquivo na lista de// arquivos
+                semCombinadora.release(); // arquivo pronto
                 barreiraEntrada.release();
                 mutex.acquire();
                 Main.contador--;
                 if (Main.contador == 0) {
                     barreiraEntrada.acquire(); // fecha
-                    semCombinadora.release();
+                    semCombinadora.acquire(); // espera o arquivo da combinadora ficar pronto
                     barreiraSaída.release(); // abre
                 }
                 mutex.release();
@@ -80,4 +51,9 @@ public class Trabalhadora extends Thread {
         }
     }
 
+    private String criarArquivo(ListaDeInteiros arquivo) throws IOException {
+        String output = this.getName() + ".ser";
+        ManipularArquivo.salvar(output, arquivo);
+        return output;
+    }
 }
