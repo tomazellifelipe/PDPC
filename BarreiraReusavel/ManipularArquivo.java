@@ -10,14 +10,15 @@ public class ManipularArquivo implements Serializable {
         arquivo.close();
     }
 
-    public static ListaDeInteiros abrir(String nomeDoArquivo) throws IOException, ClassNotFoundException {
+    public static ListaDeInteiros abrir(String nome) throws IOException, ClassNotFoundException {
         ListaDeInteiros output = null;
-        FileInputStream arquivo = new FileInputStream(nomeDoArquivo);
+        FileInputStream arquivo = new FileInputStream(nome);
         ObjectInputStream restaurador = new ObjectInputStream(arquivo);
         output = (ListaDeInteiros) restaurador.readObject();
         restaurador.close();
         arquivo.close();
         return output;
     }
+
 
 }

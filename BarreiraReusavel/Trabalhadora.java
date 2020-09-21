@@ -5,14 +5,14 @@ import java.util.concurrent.Semaphore;
 public class Trabalhadora extends Thread {
 
     private ArrayList<String> listaDeArquivos;
-    private Semaphore mutex, barreiraEntrada, barreiraSaída, semCombinadora;
+    private Semaphore mutex, barreiraEntrada, barreiraSaida, semCombinadora;
 
-    public Trabalhadora(ArrayList<String> lista, Semaphore mutex, Semaphore barreiraEntrada, Semaphore barreiraSaida,
-            Semaphore semCombinadora) {
+    public Trabalhadora(ArrayList<String> lista, Semaphore mutex, Semaphore barreiraEntrada,
+            Semaphore barreiraSaida, Semaphore semCombinadora) {
         this.listaDeArquivos = lista;
         this.mutex = mutex;
         this.barreiraEntrada = barreiraEntrada;
-        this.barreiraSaída = barreiraSaida;
+        this.barreiraSaida = barreiraSaida;
         this.semCombinadora = semCombinadora;
     }
 
@@ -25,26 +25,30 @@ public class Trabalhadora extends Thread {
                 String nome = criarArquivo(lista);
                 System.out.println("Arquivo criado por: " + this.getName());
                 mutex.acquire();
+                // start mutex block
                 Main.contador++;
                 if (Main.contador == Main.MAX_TRABALHADORAS) {
-                    barreiraSaída.acquire(); // fecha
+                    barreiraSaida.acquire(); // fecha
                     barreiraEntrada.release(); // abre
                 }
                 mutex.release();
+                // end mutex block
                 barreiraEntrada.acquire();
-                listaDeArquivos.add(nome); // insere o nome do arquivo na lista de// arquivos
-                semCombinadora.release(); // arquivo pronto
+                listaDeArquivos.add(nome);
+                semCombinadora.release();
                 barreiraEntrada.release();
                 mutex.acquire();
+                // start mutex block
                 Main.contador--;
                 if (Main.contador == 0) {
                     barreiraEntrada.acquire(); // fecha
-                    semCombinadora.acquire(); // espera o arquivo da combinadora ficar pronto
-                    barreiraSaída.release(); // abre
+                    barreiraSaida.release(); // abre
                 }
                 mutex.release();
-                barreiraSaída.acquire();
-                barreiraSaída.release();
+                // end mutex block
+                barreiraSaida.acquire();
+                semCombinadora.acquire();
+                barreiraSaida.release();
             }
         } catch (Exception e) {
             e.printStackTrace();
