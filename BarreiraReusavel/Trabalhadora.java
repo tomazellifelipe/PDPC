@@ -35,7 +35,7 @@ public class Trabalhadora extends Thread {
                 // end mutex block
                 barreiraEntrada.acquire();
                 listaDeArquivos.add(nome);
-                semCombinadora.release();
+                // TODO #3 Send signal to Combinadora @tomazellifelipe
                 barreiraEntrada.release();
                 mutex.acquire();
                 // start mutex block
