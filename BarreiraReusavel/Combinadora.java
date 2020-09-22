@@ -21,7 +21,8 @@ public class Combinadora extends Thread {
     public void run() {
         try {
             while (true) {
-                // TODO #4 asign run method @tomazellifelipe
+                // simulate fix (just training issues)
+                // still don't know how to do it
             }
         } catch (Exception e) {
             e.printStackTrace();
