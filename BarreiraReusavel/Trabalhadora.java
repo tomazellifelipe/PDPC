@@ -7,8 +7,8 @@ public class Trabalhadora extends Thread {
     private ArrayList<String> listaDeArquivos;
     private Semaphore mutex, barreiraEntrada, barreiraSaida, semCombinadora;
 
-    public Trabalhadora(ArrayList<String> lista, Semaphore mutex, Semaphore barreiraEntrada,
-            Semaphore barreiraSaida, Semaphore semCombinadora) {
+    public Trabalhadora(ArrayList<String> lista, Semaphore mutex, Semaphore barreiraEntrada, Semaphore barreiraSaida,
+            Semaphore semCombinadora) {
         this.listaDeArquivos = lista;
         this.mutex = mutex;
         this.barreiraEntrada = barreiraEntrada;
@@ -33,9 +33,10 @@ public class Trabalhadora extends Thread {
                 }
                 mutex.release();
                 // end mutex block
-                barreiraEntrada.acquire();
+                barreiraEntrada.acquire(); 
                 listaDeArquivos.add(nome);
-                // TODO #3 Send signal to Combinadora @tomazellifelipe
+                // still don't know how to fix it (testing issues)
+                // send signal to Combinadora
                 barreiraEntrada.release();
                 mutex.acquire();
                 // start mutex block

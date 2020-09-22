@@ -9,8 +9,8 @@ public class Combinadora extends Thread {
     private Semaphore mutex, barreiraEntrada, barreiraSaida, semCombinadora;
     private ArrayList<String> listaDeArquivos;
 
-    public Combinadora(ArrayList<String> listaDeArquivos, Semaphore mutex,
-            Semaphore barreiraEntrada, Semaphore barreiraSaida, Semaphore semCombinadora) {
+    public Combinadora(ArrayList<String> listaDeArquivos, Semaphore mutex, Semaphore barreiraEntrada,
+            Semaphore barreiraSaida, Semaphore semCombinadora) {
         this.listaDeArquivos = listaDeArquivos;
         this.mutex = mutex;
         this.barreiraEntrada = barreiraEntrada;
@@ -21,16 +21,15 @@ public class Combinadora extends Thread {
     public void run() {
         try {
             while (true) {
-                // simulate fix (just training issues)
-                // still don't know how to do it
+              // still don't know how to fix it (testing issues)
+              // create run method
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public ListaDeInteiros carregarArquivos(ListaDeInteiros list)
-            throws IOException, ClassNotFoundException {
+    public ListaDeInteiros carregarArquivos(ListaDeInteiros list) throws IOException, ClassNotFoundException {
         for (String nome : listaDeArquivos) {
             System.out.println(this.getName() + " carregando arquivos...");
             ListaDeInteiros arquivo = ManipularArquivo.abrir(nome);
