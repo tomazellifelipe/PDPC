@@ -33,7 +33,7 @@ public class Trabalhadora extends Thread {
                 }
                 mutex.release();
                 // end mutex block
-                barreiraEntrada.acquire();
+                barreiraEntrada.acquire(); 
                 listaDeArquivos.add(nome);
                 // still don't know how to fix it (testing issues)
                 // send signal to Combinadora
