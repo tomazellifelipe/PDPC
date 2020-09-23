@@ -1,3 +1,5 @@
+package src;
+
 import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 
@@ -25,8 +27,7 @@ public class Main {
                 Trabalhadora trabalhadora3 = new Trabalhadora(listaDeArquivos, mutex,
                                 barreiraEntrada, barreiraSaida, semCombinadora);
 
-                Combinadora combinadora = new Combinadora(listaDeArquivos, mutex, barreiraEntrada,
-                                barreiraSaida, semCombinadora);
+                Combinadora combinadora = new Combinadora(listaDeArquivos, mutex, semCombinadora);
 
                 trabalhadora0.start();
 

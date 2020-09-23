@@ -1,14 +1,17 @@
+package src;
+
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
 public class Trabalhadora extends Thread {
 
+    private int counter = 0;
     private ArrayList<String> listaDeArquivos;
     private Semaphore mutex, barreiraEntrada, barreiraSaida, semCombinadora;
 
-    public Trabalhadora(ArrayList<String> lista, Semaphore mutex, Semaphore barreiraEntrada, Semaphore barreiraSaida,
-            Semaphore semCombinadora) {
+    public Trabalhadora(ArrayList<String> lista, Semaphore mutex, Semaphore barreiraEntrada,
+            Semaphore barreiraSaida, Semaphore semCombinadora) {
         this.listaDeArquivos = lista;
         this.mutex = mutex;
         this.barreiraEntrada = barreiraEntrada;
@@ -24,8 +27,8 @@ public class Trabalhadora extends Thread {
                 lista.ordenar();
                 String nome = criarArquivo(lista);
                 System.out.println("Arquivo criado por: " + this.getName());
-                mutex.acquire();
                 // start mutex block
+                mutex.acquire();
                 Main.contador++;
                 if (Main.contador == Main.MAX_TRABALHADORAS) {
                     barreiraSaida.acquire(); // fecha
@@ -33,13 +36,12 @@ public class Trabalhadora extends Thread {
                 }
                 mutex.release();
                 // end mutex block
-                barreiraEntrada.acquire(); 
+                barreiraEntrada.acquire();
                 listaDeArquivos.add(nome);
-                // still don't know how to fix it (testing issues)
-                // send signal to Combinadora
+                semCombinadora.release();
                 barreiraEntrada.release();
-                mutex.acquire();
                 // start mutex block
+                mutex.acquire();
                 Main.contador--;
                 if (Main.contador == 0) {
                     barreiraEntrada.acquire(); // fecha
@@ -48,7 +50,6 @@ public class Trabalhadora extends Thread {
                 mutex.release();
                 // end mutex block
                 barreiraSaida.acquire();
-                semCombinadora.acquire();
                 barreiraSaida.release();
             }
         } catch (Exception e) {
@@ -57,8 +58,9 @@ public class Trabalhadora extends Thread {
     }
 
     private String criarArquivo(ListaDeInteiros arquivo) throws IOException {
-        String output = this.getName() + ".ser";
+        String output = this.getName() + this.counter + ".ser";
         ManipularArquivo.salvar(output, arquivo);
+        this.counter++;
         return output;
     }
 }
