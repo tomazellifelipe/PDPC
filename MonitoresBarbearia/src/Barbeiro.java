@@ -1,7 +1,7 @@
 public class Barbeiro extends Pessoa {
 
-    public Barbeiro(Barbearia barbearia) {
-        this.barbearia = barbearia;
+    public Barbeiro() {
+        this.barbearia = null;
 
     }
 
@@ -17,6 +17,11 @@ public class Barbeiro extends Pessoa {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void setBarbearia(Barbearia barbearia) {
+        this.barbearia = barbearia;
     }
 
 }
