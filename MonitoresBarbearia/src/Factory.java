@@ -1,4 +1,4 @@
-public class Construtora {
+public class Factory {
 
     public static Pessoa criarBarbeiro() {
         return new Barbeiro();
