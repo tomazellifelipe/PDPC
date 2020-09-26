@@ -1,5 +1,7 @@
 public class Cliente extends Pessoa {
 
+    private Barbearia barbearia;
+
     public Cliente() {
         this.barbearia = null;
     }
