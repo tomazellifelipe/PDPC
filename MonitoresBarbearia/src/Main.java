@@ -1,12 +1,12 @@
 class Main {
     public static void main(String[] args) {
 
-        Barbearia barbearia = Construtora.criarBarbearia();
+        Barbearia barbearia = Factory.criarBarbearia();
 
-        Pessoa cliente = Construtora.criarBarbeiro();
+        Pessoa cliente = Factory.criarBarbeiro();
         cliente.setBarbearia(barbearia);
 
-        Pessoa barbeiro = Construtora.criarCliente();
+        Pessoa barbeiro = Factory.criarCliente();
         barbeiro.setBarbearia(barbearia);
 
         cliente.start();
