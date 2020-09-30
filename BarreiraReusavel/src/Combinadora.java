@@ -1,7 +1,6 @@
 package src;
 
-import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 
 public class Combinadora extends Thread {
@@ -9,13 +8,17 @@ public class Combinadora extends Thread {
     private int counter = 0;
     private int arquivosRecebidos = 0;
     private Semaphore mutexArquivos, semCombinadora;
-    private ArrayList<String> listaDeArquivos;
+    private ArrayList<String> Arquivos;
 
-    public Combinadora(ArrayList<String> listaDeArquivos, Semaphore mutex,
-            Semaphore semCombinadora) {
-        this.listaDeArquivos = listaDeArquivos;
+    public Combinadora(
+        ArrayList<String> listaDeArquivos, 
+        Semaphore mutex,
+        Semaphore semCombinadora) {
+
+        this.Arquivos = listaDeArquivos;
         this.mutexArquivos = mutex;
         this.semCombinadora = semCombinadora;
+
     }
 
     public void run() {
@@ -27,27 +30,33 @@ public class Combinadora extends Thread {
                 semCombinadora.acquire();
                 // start mutex block
                 ListaDeInteiros inteiros = new ListaDeInteiros();
-                for (int i = arquivosRecebidos; i < listaDeArquivos.size(); i++) {
+                int auxInicio = arquivosRecebidos;
+                int auxFinal = arquivosRecebidos + 4;
+                for (int i = auxInicio; i < auxFinal; i++) {
                     mutexArquivos.acquire();
-                    ListaDeInteiros aux = carregarArquivos(listaDeArquivos.get(i));
+                        String fileName = Arquivos.get(i);
                     mutexArquivos.release();
-                    inteiros.getList().removeAll(aux.getList());
-                    inteiros.getList().addAll(aux.getList());
+                    ArrayList<Integer> aux = ManipularArquivo.ler(fileName);
+                    // System.out.println("Iniciando merge de arquivos");
+
+                    for (Integer num : aux) {
+                        if (!inteiros.getList().contains(num)) {
+                             inteiros.getList().add(num);
+                        }
+                    }
+
                     arquivosRecebidos++;
                 }
                 // end mutex block1
-                String nome = this.getName() + counter + ".ser";
-                ManipularArquivo.salvar(nome, inteiros);
+                String nome = this.getName() + counter + ".txt";
+                counter++;
+                ManipularArquivo.escrever(inteiros.getList(), nome);
+                System.out.println("SALVOU");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public ListaDeInteiros carregarArquivos(String nome)
-            throws IOException, ClassNotFoundException {
-        System.out.println(this.getName() + " carregando arquivos...");
-        ListaDeInteiros output = ManipularArquivo.abrir(nome);
-        return output;
-    }
+
 }

@@ -16,24 +16,18 @@ public class Main {
                 Semaphore barreiraSaida = new Semaphore(1);
                 Semaphore semCombinadora = new Semaphore(0);
 
-                ArrayList<String> listaDeArquivos = new ArrayList<>();
+                ArrayList<String> Arquivos = new ArrayList<>();
 
-                Trabalhadora trabalhadora0 = new Trabalhadora(listaDeArquivos, mutex,
-                                barreiraEntrada, barreiraSaida, semCombinadora, mutexArquivos);
-                Trabalhadora trabalhadora1 = new Trabalhadora(listaDeArquivos, mutex,
-                                barreiraEntrada, barreiraSaida, semCombinadora, mutexArquivos);
-                Trabalhadora trabalhadora2 = new Trabalhadora(listaDeArquivos, mutex,
-                                barreiraEntrada, barreiraSaida, semCombinadora, mutexArquivos);
-                Trabalhadora trabalhadora3 = new Trabalhadora(listaDeArquivos, mutex,
-                                barreiraEntrada, barreiraSaida, semCombinadora, mutexArquivos);
-
-                Combinadora combinadora = new Combinadora(listaDeArquivos, mutex, semCombinadora);
-
-                trabalhadora0.start();
-
-                trabalhadora1.start();
-                trabalhadora2.start();
-                trabalhadora3.start();
-                combinadora.start();
+                for (int i = 0; i < MAX_TRABALHADORAS; i++) {
+                        new Trabalhadora(
+                        Arquivos, 
+                        mutex,
+                        barreiraEntrada, 
+                        barreiraSaida, 
+                        semCombinadora, 
+                        mutexArquivos).start();
+                }
+                new Combinadora(Arquivos, mutex, semCombinadora).start();
+                
         }
 }
