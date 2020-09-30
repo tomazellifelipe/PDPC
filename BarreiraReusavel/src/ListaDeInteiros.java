@@ -6,7 +6,7 @@ import java.util.Collections;
 
 public class ListaDeInteiros implements Serializable {
 
-    private final int MAX_LENGTH = 1000000;
+    private final int MAX_LENGTH = 10000;
     private ArrayList<Integer> list;
 
     public ListaDeInteiros() {

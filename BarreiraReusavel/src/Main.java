@@ -11,6 +11,7 @@ public class Main {
         public static void main(String[] args) {
 
                 Semaphore mutex = new Semaphore(1);
+                Semaphore mutexArquivos = new Semaphore(1);
                 Semaphore barreiraEntrada = new Semaphore(0);
                 Semaphore barreiraSaida = new Semaphore(1);
                 Semaphore semCombinadora = new Semaphore(0);
@@ -18,14 +19,13 @@ public class Main {
                 ArrayList<String> listaDeArquivos = new ArrayList<>();
 
                 Trabalhadora trabalhadora0 = new Trabalhadora(listaDeArquivos, mutex,
-                                barreiraEntrada, barreiraSaida, semCombinadora);
-
+                                barreiraEntrada, barreiraSaida, semCombinadora, mutexArquivos);
                 Trabalhadora trabalhadora1 = new Trabalhadora(listaDeArquivos, mutex,
-                                barreiraEntrada, barreiraSaida, semCombinadora);
+                                barreiraEntrada, barreiraSaida, semCombinadora, mutexArquivos);
                 Trabalhadora trabalhadora2 = new Trabalhadora(listaDeArquivos, mutex,
-                                barreiraEntrada, barreiraSaida, semCombinadora);
+                                barreiraEntrada, barreiraSaida, semCombinadora, mutexArquivos);
                 Trabalhadora trabalhadora3 = new Trabalhadora(listaDeArquivos, mutex,
-                                barreiraEntrada, barreiraSaida, semCombinadora);
+                                barreiraEntrada, barreiraSaida, semCombinadora, mutexArquivos);
 
                 Combinadora combinadora = new Combinadora(listaDeArquivos, mutex, semCombinadora);
 

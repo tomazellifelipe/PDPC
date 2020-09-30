@@ -8,15 +8,16 @@ public class Trabalhadora extends Thread {
 
     private int counter = 0;
     private ArrayList<String> listaDeArquivos;
-    private Semaphore mutex, barreiraEntrada, barreiraSaida, semCombinadora;
+    private Semaphore mutex, barreiraEntrada, barreiraSaida, semCombinadora, mutexArquivos;
 
     public Trabalhadora(ArrayList<String> lista, Semaphore mutex, Semaphore barreiraEntrada,
-            Semaphore barreiraSaida, Semaphore semCombinadora) {
+            Semaphore barreiraSaida, Semaphore semCombinadora, Semaphore mutexArquivos) {
         this.listaDeArquivos = lista;
         this.mutex = mutex;
         this.barreiraEntrada = barreiraEntrada;
         this.barreiraSaida = barreiraSaida;
         this.semCombinadora = semCombinadora;
+        this.mutexArquivos = mutexArquivos;
     }
 
     public void run() {
@@ -37,9 +38,12 @@ public class Trabalhadora extends Thread {
                 mutex.release();
                 // end mutex block
                 barreiraEntrada.acquire();
-                listaDeArquivos.add(nome);
-                semCombinadora.release();
                 barreiraEntrada.release();
+                mutexArquivos.acquire();
+                listaDeArquivos.add(nome);
+                mutexArquivos.release();
+                semCombinadora.release();
+                // mutex
                 // start mutex block
                 mutex.acquire();
                 Main.contador--;
