@@ -44,7 +44,7 @@ public class Combinadora extends Thread {
                              inteiros.getList().add(num);
                         }
                     }
-
+                    inteiros.ordenar();
                     arquivosRecebidos++;
                 }
                 // end mutex block1
