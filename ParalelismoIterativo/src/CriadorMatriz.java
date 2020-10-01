@@ -6,16 +6,17 @@ public class CriadorMatriz {
     private double[][] matriz;
     
     public CriadorMatriz(int rows, int colums) {
-        this.matriz = new double[rows][colums];     
+        this.matriz = new double[rows][colums];
+
     }
 
-    public double gerarDouble(double max) {
+    private double gerarDouble(double max) {
         return max * r.nextDouble();
     }
 
     public void popular() {
         for (int i = 0; i < matriz.length; i++) {
-            for (int j = 0; j < matriz.length; j++) {
+            for (int j = 0; j < matriz[0].length; j++) {
                 matriz[i][j] = gerarDouble(1000);    
             }
         }
@@ -23,6 +24,10 @@ public class CriadorMatriz {
 
     public double[][] getMatriz() {
         return this.matriz;
+    }
+
+    public void setMatriz(double[][] matriz) {
+        this.matriz = matriz;
     }
 
 
