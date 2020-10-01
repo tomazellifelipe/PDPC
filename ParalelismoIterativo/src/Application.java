@@ -17,7 +17,6 @@ public class Application {
 
             for (int i = 0; i < matrizSetup.length; i++) {
 
-
                 long tempoExec = Iniciador.executeSequencial(i, matrizSetup[i]);
 
                 System.out.println("Tempo de execução sequencial: " + tempoExec);

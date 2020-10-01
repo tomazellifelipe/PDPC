@@ -10,8 +10,12 @@ public class Iniciador {
         long tempoInicio = System.currentTimeMillis();
         double[][] matrizA = CSVHandler.lerCSV( "matrizA" + id + ".csv", setup[0], setup[1] );
         double[][] matrizB = CSVHandler.lerCSV( "matrizB" + id + ".csv", setup[1], setup[2] );
+        long tempoInput = System.currentTimeMillis();
+        System.out.println("Tempo de input: " + (tempoInput - tempoInicio));
         Calculo c = new Calculo(0, setup[1]);
         double[][] matrizResultante = c.multiplicarMatrizes( matrizA, matrizB );
+        long tempoCalc = System.currentTimeMillis();
+        System.out.println("Tempo de processamento: " + (tempoCalc - tempoInput));
         CSVHandler.criarCSV( "matrizC" + id + ".csv", matrizResultante );
         long tempoFinal = System.currentTimeMillis();
         return tempoFinal - tempoInicio;

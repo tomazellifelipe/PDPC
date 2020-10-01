@@ -15,7 +15,7 @@ public class Calculo {
             for (int j = 0; j < matrizB[1].length; j++) {
                 matrizC[i][j] = 0.0;
                 for (int k = this.inicio; k < this.fim; k++) {
-                    matrizC[i][j] = matrizC[i][j] + matrizA[i][k] + matrizB[k][j];            
+                    matrizC[i][j] = matrizC[i][j] + matrizA[i][k] * matrizB[k][j];            
                 }  
             }
         }
