@@ -5,7 +5,10 @@ import java.io.IOException;
 
 public class CSVHandler {
 
-    public static void criarCSV( String fileName, double[][] matriz ) throws IOException {
+    public static void criarCSV( 
+        String fileName, 
+        double[][] matriz ) throws IOException {
+        
         FileWriter csvWriter = new FileWriter(fileName); 
         for (double[] row : matriz) {
             String[] line = new String[row.length];
@@ -22,7 +25,31 @@ public class CSVHandler {
         
     }
 
-    public static double[][] lerCSV(String fileName, int rows, int columns) throws IOException {
+    public static void criarCSVL( 
+        String fileName, 
+        long[][] matriz ) throws IOException {
+        
+        FileWriter csvWriter = new FileWriter(fileName); 
+        for (long[] row : matriz) {
+            String[] line = new String[row.length];
+            for (int i = 0; i < line.length; i++) {
+                line[i] = String.valueOf(row[i]);
+            }
+
+            csvWriter.append(String.join(",", line));
+            csvWriter.append("\n");
+        }
+        
+        csvWriter.flush();
+        csvWriter.close();
+        
+    }
+
+    public static double[][] lerCSV( 
+        String fileName, 
+        int rows, 
+        int columns ) throws IOException {
+        
         FileReader fr = new FileReader(fileName); 
         BufferedReader csvReader = new BufferedReader(fr); 
         String[][] matriz = new String[rows][columns]; 

@@ -13,16 +13,34 @@ public class Application {
                                       { 1000, 2000, 1000 }, { 2000, 4000, 2000 } };
 
         try {
-            configurarSetup(matrizSetup);
-
+            // configurarSetup(matrizSetup);
+            
             for (int i = 0; i < matrizSetup.length; i++) {
 
-                long tempoExec = Iniciador.executeSequencial(i, matrizSetup[i]);
+                System.out.println("Setup: " + i);
+                long tempoInputInicial = System.currentTimeMillis();
+                double[][] matrizA = CSVHandler.lerCSV( 
+                    "matrizA" + i + ".csv", 
+                    matrizSetup[i][0], 
+                    matrizSetup[i][1] );
+                double[][] matrizB = CSVHandler.lerCSV( 
+                        "matrizB" + i + ".csv", 
+                        matrizSetup[i][1], 
+                        matrizSetup[i][2] );
+                double[][] matrizC = new double[matrizSetup[i][0]][matrizSetup[i][2]];      
+                long tempoInputFinal = System.currentTimeMillis();
+                System.out.println("Tempo de input: " + (tempoInputFinal - tempoInputInicial));
 
-                System.out.println("Tempo de execução sequencial: " + tempoExec);
+                long tempoExecS = Iniciador.executeSequencial(matrizA, matrizB, matrizC);
+                System.out.println("\tTempo de execução sequencial: " + tempoExecS);
 
-                
+                long tempoExecP = Iniciador.executeParalela(totalProcessadores, matrizA, matrizB, matrizC );
+                System.out.println("\tTempo de execução paralela: " + tempoExecP);
 
+                long tempoOutputInicial = System.currentTimeMillis();
+                CSVHandler.criarCSV("matrizC.csv", matrizC);
+                long tempoOutputFinal = System.currentTimeMillis();
+                System.out.println("Tempo de output: " + (tempoOutputFinal- tempoOutputInicial));
             }
 
         } catch (Exception e) {

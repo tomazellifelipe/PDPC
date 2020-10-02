@@ -2,24 +2,27 @@ public class Calculo {
 
     private int inicio, fim;
 
-    public Calculo(int inicio, int fim) {
+    public Calculo(
+        int inicio, 
+        int fim ) {
+
         this.inicio = inicio;
-        this.fim = fim;    
+        this.fim = fim;
+        
     }
 
-    public double[][] multiplicarMatrizes(
+    public void multiplicarMatrizes(
         double[][] matrizA, 
-        double[][] matrizB) {
-        double[][] matrizC = new double[matrizA.length][matrizB[1].length];
-        for (int i = 0; i < matrizA.length; i++) {
-            for (int j = 0; j < matrizB[1].length; j++) {
+        double[][] matrizB,
+        double[][] matrizC) {
+        for (int i = this.inicio; i < this.fim; i++) {
+            for (int j = 0; j < matrizC[0].length; j++) {
                 matrizC[i][j] = 0.0;
-                for (int k = this.inicio; k < this.fim; k++) {
+                for (int k = 0; k < matrizA[0].length; k++) {
                     matrizC[i][j] = matrizC[i][j] + matrizA[i][k] * matrizB[k][j];            
                 }  
             }
         }
         
-        return matrizC;
     }
 }

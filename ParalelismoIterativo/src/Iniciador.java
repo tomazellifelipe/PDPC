@@ -4,44 +4,50 @@ import java.util.concurrent.Semaphore;
 public class Iniciador {
 
     public static long executeSequencial(
-        int id, 
-        int[] setup ) throws IOException {
+        double[][] matrizA,
+        double[][] matrizB, 
+        double[][] matrizC ) throws IOException {
         
         long tempoInicio = System.currentTimeMillis();
-        double[][] matrizA = CSVHandler.lerCSV( "matrizA" + id + ".csv", setup[0], setup[1] );
-        double[][] matrizB = CSVHandler.lerCSV( "matrizB" + id + ".csv", setup[1], setup[2] );
-        long tempoInput = System.currentTimeMillis();
-        System.out.println("Tempo de input: " + (tempoInput - tempoInicio));
-        Calculo c = new Calculo(0, setup[1]);
-        double[][] matrizResultante = c.multiplicarMatrizes( matrizA, matrizB );
-        long tempoCalc = System.currentTimeMillis();
-        System.out.println("Tempo de processamento: " + (tempoCalc - tempoInput));
-        CSVHandler.criarCSV( "matrizC" + id + ".csv", matrizResultante );
+        // processamento
+        Calculo c = new Calculo(0, matrizA.length);
+        c.multiplicarMatrizes( matrizA, matrizB, matrizC );
+    
         long tempoFinal = System.currentTimeMillis();
+
         return tempoFinal - tempoInicio;
             
     }
 
-    public static long executeParalela(int numThreads, int dimensao) throws InterruptedException {
+    public static long executeParalela(
+        int numThreads, 
+        double[][] matrizA,
+        double[][] matrizB,
+        double[][] matrizC ) throws InterruptedException, IOException {
 
         Semaphore conclusao = new Semaphore(0);
 
-        ThreadParalela[] tParalelas = new ThreadParalela[numThreads];
-        int p = dimensao / numThreads; // numero de colunas;
+        ThreadParalela[] threadsParalelas = new ThreadParalela[numThreads];
+        int passo = matrizA.length / numThreads; // numero de colunas;
         int inicio = 0;
-        int fim = inicio + p;
-        for (int i = 0; i < tParalelas.length; i++) {
-            tParalelas[i] = new ThreadParalela(inicio, fim, conclusao);
-            inicio = inicio + p;
-            fim = inicio + p;
-        }
+        int fim = inicio + passo;
 
         long tempoInicio = System.currentTimeMillis();
-        for (int i = 0; i < tParalelas.length; i++) {
-            tParalelas[i].start();
+        // processamento
+        for (int i = 0; i < threadsParalelas.length; i++) {
+            threadsParalelas[i] = new ThreadParalela( matrizA, matrizB, matrizC, 
+                                                      inicio, fim, 
+                                                      conclusao);
+            inicio = inicio + passo;
+            fim = inicio + passo;
+        }
+        
+        for (int i = 0; i < threadsParalelas.length; i++) {
+            threadsParalelas[i].start();
         }
 
         conclusao.acquire(4);
+        
         long tempoFinal = System.currentTimeMillis();
 
         return tempoFinal - tempoInicio;
