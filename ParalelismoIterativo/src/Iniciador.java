@@ -46,7 +46,7 @@ public class Iniciador {
             threadsParalelas[i].start();
         }
 
-        conclusao.acquire(4);
+        conclusao.acquire(numThreads);
         
         long tempoFinal = System.currentTimeMillis();
 
