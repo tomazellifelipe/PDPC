@@ -5,20 +5,26 @@ public class SpeedAnalysis {
         Semaphore mutex = new Semaphore(1);
 
         Sequence sequence = new Sequence(50);
-        int[] arr = sequence.getSequence();
-        int n = arr.length;
+        int[] arrSequencial = sequence.getSequence();
+        int[] arrMultiThread = sequence.getSequence();
+        int n = arrSequencial.length;
         
-        QuickSort sequencial = new QuickSort(arr, 0, n - 1, mutex);
-        sequencial.sort(arr, 0, n - 1);
-        
-        QuickSort multiThread = new QuickSort(arr, 0, n - 1, mutex);
+        QuickSort sequencial = new QuickSort(arrSequencial, 0, n - 1);
+        sequencial.sort(arrSequencial, 0, n - 1);
+
+        QuickSortMultiThread multiThread = new QuickSortMultiThread(arrMultiThread, 0, n - 1, mutex);
             
         multiThread.start();
         multiThread.join();
             
         // Print shorted elements 
         for (int i = 0; i < n; i++) 
-            System.out.print(arr[i] + " ");
+            System.out.print(arrSequencial[i] + " ");
+
+        System.out.println();
+        
+        for (int i = 0; i < n; i++) 
+            System.out.print(arrMultiThread[i] + " ");
     }
     
 }
