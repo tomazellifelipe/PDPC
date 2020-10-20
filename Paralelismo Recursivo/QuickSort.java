@@ -1,16 +1,7 @@
 public class QuickSort implements IQuickSort {
 
-    int low, high;
-    int[] arr;
-
-    public QuickSort(int[] arr, int low, int high) {
-        this.arr = arr;
-        this.low = low;
-        this.high = high;
-    }
-
     @Override
-    public int partition(int[] arr, int low, int high) throws InterruptedException {
+    public int partition(int[] arr, int low, int high) {
         int pivot = arr[high];
         int i = (low - 1);
         for (int j = low; j < high; j++) {
@@ -32,14 +23,12 @@ public class QuickSort implements IQuickSort {
     }
 
     @Override
-    public void sort(int[] arr, int low, int high) throws InterruptedException {
+    public void sort(int[] arr, int low, int high) {
         if (low < high) {
             int pi = partition(arr, low, high);
 
             sort(arr, low, pi - 1);
             sort(arr, pi + 1, high);
         }
-
     }
-    
 }

@@ -1,30 +1,32 @@
 import java.util.concurrent.Semaphore;
 
 public class SpeedAnalysis {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         Semaphore mutex = new Semaphore(1);
-
-        Sequence sequence = new Sequence(50);
+        
+        Sequence sequence = new Sequence((int) Math.pow(2, 15));
         int[] arrSequencial = sequence.getSequence();
-        int[] arrMultiThread = sequence.getSequence();
+        int[] arrMultiThread = arrSequencial.clone();
         int n = arrSequencial.length;
         
-        QuickSort sequencial = new QuickSort(arrSequencial, 0, n - 1);
+        QuickSort sequencial = new QuickSort();
+        long sequencialTimeStart = System.currentTimeMillis();
         sequencial.sort(arrSequencial, 0, n - 1);
+        long sequencialTimeEnd = System.currentTimeMillis();
+        System.out.println("Sequencial Time: " + (sequencialTimeEnd - sequencialTimeStart));
 
         QuickSortMultiThread multiThread = new QuickSortMultiThread(arrMultiThread, 0, n - 1, mutex);
-            
+        long multiThreadTimeStart = System.currentTimeMillis();
         multiThread.start();
-        multiThread.join();
+        try {
+            multiThread.join();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        long multiThreadTimeEnd = System.currentTimeMillis();
+        System.out.println("MultiThread Time: " + (multiThreadTimeEnd - multiThreadTimeStart));
             
-        // Print shorted elements 
-        for (int i = 0; i < n; i++) 
-            System.out.print(arrSequencial[i] + " ");
-
-        System.out.println();
         
-        for (int i = 0; i < n; i++) 
-            System.out.print(arrMultiThread[i] + " ");
     }
     
 }
