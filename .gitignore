@@ -39,8 +39,10 @@ hs_err_pid*
 # Ignore all local history of files
 .history
 
-### Ignore pdf/xlsx files from class
+### Ignore no-code files from class
 *.pdf
 *.xlsx
+*.docx
+*.png
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,java
