@@ -2,18 +2,19 @@ import java.util.concurrent.Semaphore;
 
 class QuickSortMultiThread extends Thread implements IQuickSort {
 
-    final int AVAILABLE_PROCESSORS = Runtime.getRuntime().availableProcessors();
+    
     static int runningThreads = 0;
 
-    private int low, high;
+    private int low, high, processors;
     private int[] arr;
     private Semaphore mutex;
 
-    public QuickSortMultiThread(int[] arr, int low, int high, Semaphore mutex) {
+    public QuickSortMultiThread(int[] arr, int low, int high, Semaphore mutex, int processors) {
         this.arr = arr;
         this.low = low;
         this.high = high;
         this.mutex = mutex;
+        this.processors = processors;
     }
 
     public void run() {
@@ -26,9 +27,9 @@ class QuickSortMultiThread extends Thread implements IQuickSort {
         if (low < high) {
             int pi = partition(arr, low, high);
 
-            if (runningThreads < AVAILABLE_PROCESSORS - 1) {
-                QuickSortMultiThread left = new QuickSortMultiThread(arr, low, pi - 1, mutex);
-                QuickSortMultiThread right = new QuickSortMultiThread(arr, pi + 1, high, mutex);
+            if (runningThreads < processors - 1) {
+                QuickSortMultiThread left = new QuickSortMultiThread(arr, low, pi - 1, mutex, processors);
+                QuickSortMultiThread right = new QuickSortMultiThread(arr, pi + 1, high, mutex, processors);
 
                 left.start();
                 right.start();
