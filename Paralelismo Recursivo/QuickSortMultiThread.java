@@ -27,7 +27,7 @@ class QuickSortMultiThread extends Thread implements IQuickSort {
         if (low < high) {
             int pi = partition(arr, low, high);
 
-            if (runningThreads < processors - 1) {
+            if (runningThreads < processors) {
                 QuickSortMultiThread left = new QuickSortMultiThread(arr, low, pi - 1, mutex, processors);
                 QuickSortMultiThread right = new QuickSortMultiThread(arr, pi + 1, high, mutex, processors);
 

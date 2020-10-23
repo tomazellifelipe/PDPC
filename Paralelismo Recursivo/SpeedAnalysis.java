@@ -7,7 +7,7 @@ public class SpeedAnalysis {
     public static void main(String[] args) {
         Semaphore mutex = new Semaphore(1);
         
-        meanTimesForAllSequences(mutex);
+        // meanTimesForAllSequences(mutex);
         meanTimesForIncreasingThreads(mutex);
     }
 
