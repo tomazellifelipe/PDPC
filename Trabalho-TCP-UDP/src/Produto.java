@@ -27,5 +27,13 @@ public class Produto {
     private double precoAleatorio() {
         return precos[r.nextInt(10)];
     }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public Double getPreco() {
+        return preco;
+    }
     
 }

@@ -5,12 +5,12 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.Socket;
 
-public class TrabalhadorSer extends Thread {
+public class ComunicacaoVolta extends Thread {
 
     private DatagramSocket socket;
     private Socket socketCli;
 
-    public TrabalhadorSer(DatagramSocket socket, Socket socketCli) {
+    public ComunicacaoVolta(DatagramSocket socket, Socket socketCli) {
         this.socket = socket;
         this.socketCli = socketCli;
     }
@@ -27,7 +27,7 @@ public class TrabalhadorSer extends Thread {
             socketCli.close();
             
         } catch (Exception e) {
-            //TODO: handle exception
+            e.printStackTrace();
         }
     }
 }

@@ -5,8 +5,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 
 public class Loja {
 
@@ -20,7 +18,6 @@ public class Loja {
     }
 
     public static void main(String[] args) {
-        Loja loja = new Loja();
         try {
             conexaoUDPComGrupo();
             String dadosTexto = receberMsgDoGrupo();

@@ -7,18 +7,19 @@ import java.net.Socket;
 public class Servidor {
     public static void main(String[] args) {
         try {
-            ServerSocket serverSocket = new ServerSocket(5050);
+            ServerSocket socketServidor = new ServerSocket(5050);
             DatagramSocket socketLoja = new DatagramSocket(4545);
     
             while (true) {
                 System.out.println("Aguardando conexao");
-                Socket socketCliente = serverSocket.accept();
+                Socket socketCliente = socketServidor.accept();
                 System.out.println("Conexao estabelecida");
                 
-                Trabalhador trab = new Trabalhador(socketCliente);
+                ComunicacaoIda trab = new ComunicacaoIda(socketCliente);
                 trab.start();
-                TrabalhadorSer trabSer = new TrabalhadorSer(socketLoja, socketCliente);
+                ComunicacaoVolta trabSer = new ComunicacaoVolta(socketLoja, socketCliente);
                 trabSer.start();
+                
             }
         } catch (Exception e) {
             e.printStackTrace();

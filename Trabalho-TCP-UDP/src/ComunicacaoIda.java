@@ -6,15 +6,14 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
-public class Trabalhador extends Thread {
+public class ComunicacaoIda extends Thread {
 
     private Socket socket;
     private MulticastSocket multiSocket;
     private InetAddress grupo;
 
-    public Trabalhador(Socket socket) {
+    public ComunicacaoIda(Socket socket) {
         this.socket = socket;
     }
 
