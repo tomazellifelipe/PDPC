@@ -18,7 +18,7 @@ public class Trabalhador extends Thread {
         try {
             DataInputStream entrada = new DataInputStream(socket.getInputStream());
             String pesquisa = entrada.readUTF();
-            socket.close();
+            // socket.close();
             System.out.println("Conexao encerrada com cliente");
 
             InetAddress grupo = InetAddress.getByName("224.0.0.1");

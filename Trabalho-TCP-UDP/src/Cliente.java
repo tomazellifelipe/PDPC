@@ -18,6 +18,7 @@ public class Cliente {
 
             DataInputStream entrada = new DataInputStream(socket.getInputStream());
             String pesquisa = entrada.readUTF();
+            System.out.println("Recebido info: " + pesquisa);
 
             socket.close();
 
