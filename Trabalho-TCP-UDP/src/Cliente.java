@@ -24,8 +24,7 @@ public class Cliente {
         }
     }
 
-    private static void conexaoUTPComServidor(String host, int port)
-            throws IOException {
+    private static void conexaoUTPComServidor(String host, int port) throws IOException {
         socket = new Socket(host, port); 
     }
 

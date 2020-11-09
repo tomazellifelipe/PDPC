@@ -1,7 +1,5 @@
 package src;
 
-import java.io.DataInput;
-import java.io.DataInputStream;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -10,6 +8,7 @@ public class Servidor {
     public static void main(String[] args) {
         try {
             ServerSocket serverSocket = new ServerSocket(5050);
+            DatagramSocket socketLoja = new DatagramSocket(4545);
     
             while (true) {
                 System.out.println("Aguardando conexao");
@@ -18,8 +17,6 @@ public class Servidor {
                 
                 Trabalhador trab = new Trabalhador(socketCliente);
                 trab.start();
-                int portaLoja = 4545;
-                DatagramSocket socketLoja = new DatagramSocket(portaLoja);
                 TrabalhadorSer trabSer = new TrabalhadorSer(socketLoja, socketCliente);
                 trabSer.start();
             }

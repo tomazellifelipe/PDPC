@@ -7,8 +7,8 @@ public class Produto {
     Random r = new Random();
 
     private String[] produtos = {"cama", "mesa", "cadeira", "armario",
-                                 "celular", "computador", "monitor", 
-                                 "livro", "video game"};
+                                 "celular", "computador", "monitor", "livro", 
+                                 "video game", "carro"};
     private double[] precos = {58.00, 124.89, 36.50, 18.99, 249.90,
                                23.60, 299.99, 47.50, 12.85, 105.49};
 
