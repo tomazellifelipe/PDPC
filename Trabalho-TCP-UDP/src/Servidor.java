@@ -9,21 +9,20 @@ public class Servidor {
         try {
             ServerSocket socketServidor = new ServerSocket(5050);
             DatagramSocket socketLoja = new DatagramSocket(4545);
-    
+
             while (true) {
-                System.out.println("Aguardando conexao");
+                System.out.println("Aguardando conexao com o cliente");
                 Socket socketCliente = socketServidor.accept();
                 System.out.println("Conexao estabelecida");
-                
-                ComunicacaoIda trab = new ComunicacaoIda(socketCliente);
-                trab.start();
-                ComunicacaoVolta trabSer = new ComunicacaoVolta(socketLoja, socketCliente);
-                trabSer.start();
-                
+                ComunicacaoIda comsIda = new ComunicacaoIda(socketCliente);
+                comsIda.start();
+                ComunicacaoVolta comsVolta = new ComunicacaoVolta(socketLoja, socketCliente);
+                comsVolta.start();
+
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }
 }

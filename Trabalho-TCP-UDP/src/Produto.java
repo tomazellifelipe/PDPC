@@ -9,11 +9,11 @@ public class Produto {
     private String[] produtos = {"cama", "mesa", "cadeira", "armario",
                                  "celular", "computador", "monitor", "livro", 
                                  "video game", "carro"};
-    private double[] precos = {58.00, 124.89, 36.50, 18.99, 249.90,
-                               23.60, 299.99, 47.50, 12.85, 105.49};
+    private float[] precos = {58.00f, 124.89f, 36.50f, 18.99f, 249.90f,
+                              23.60f, 299.99f, 47.50f, 12.85f, 105.49f};
 
     private String nome;
-    private double preco;
+    private float preco;
     
     public Produto() {
         this.nome = nomeAleatorio();
@@ -24,7 +24,7 @@ public class Produto {
         return produtos[r.nextInt(10)];        
     }
 
-    private double precoAleatorio() {
+    private float precoAleatorio() {
         return precos[r.nextInt(10)];
     }
 
@@ -32,7 +32,7 @@ public class Produto {
         return nome;
     }
 
-    public Double getPreco() {
+    public float getPreco() {
         return preco;
     }
     

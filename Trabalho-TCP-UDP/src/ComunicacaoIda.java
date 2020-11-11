@@ -12,6 +12,7 @@ public class ComunicacaoIda extends Thread {
     private Socket socket;
     private MulticastSocket multiSocket;
     private InetAddress grupo;
+    private int portaGrupo;
 
     public ComunicacaoIda(Socket socket) {
         this.socket = socket;
@@ -20,7 +21,7 @@ public class ComunicacaoIda extends Thread {
     public void run() {
         try {
             String pesquisa = receberMsgDoCliente();
-            conexaoUDPComLoja("224.0.0.1");
+            conexaoUDPComLoja("224.0.0.1", 3000);
             enviarMsgParaGrupo(pesquisa);
             System.out.println("Mensagem enviado servidor-loja");
 
@@ -29,9 +30,10 @@ public class ComunicacaoIda extends Thread {
         }
     }
 
-    private void conexaoUDPComLoja(String host) throws IOException {
+    private void conexaoUDPComLoja(String host, int port) throws IOException {
         grupo = InetAddress.getByName(host);
         multiSocket = new MulticastSocket();
+        portaGrupo = port;
     }
 
     private String receberMsgDoCliente() throws IOException {
@@ -40,7 +42,7 @@ public class ComunicacaoIda extends Thread {
     }
 
     private void enviarMsgParaGrupo(String msg) throws IOException {
-        DatagramPacket pesquisar = new DatagramPacket(msg.getBytes(), msg.length(), grupo, 3000);
+        DatagramPacket pesquisar = new DatagramPacket(msg.getBytes(), msg.length(), grupo, portaGrupo);
         multiSocket.send(pesquisar);
     }
 

@@ -16,7 +16,6 @@ public class Cliente {
             System.out.println("Mensagem enviada cliente-servidor");
             String resposta = receberMsgDoServidor();
             System.out.println("Recebido info: " + resposta);
-
             socket.close();
 
         } catch (Exception e) {
