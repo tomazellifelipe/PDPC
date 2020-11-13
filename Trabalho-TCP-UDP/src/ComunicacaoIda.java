@@ -23,7 +23,6 @@ public class ComunicacaoIda extends Thread {
             String pesquisa = receberMsgDoCliente();
             conexaoUDPComLoja("224.0.0.1", 3000);
             enviarMsgParaGrupo(pesquisa);
-            System.out.println("Mensagem enviado servidor-loja");
 
         } catch (Exception e) {
             e.printStackTrace();

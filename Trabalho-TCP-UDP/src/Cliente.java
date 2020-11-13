@@ -4,18 +4,22 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Cliente {
 
     private static Socket socket;
 
     public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
         try {
             conexaoUTPComServidor("127.0.0.1", 5050);
-            enviarMsgParaServidor("mesa");
+            System.out.println("Procurar por: ");
+            enviarMsgParaServidor(input.nextLine());
+            input.close();
             System.out.println("Mensagem enviada cliente-servidor");
             String resposta = receberMsgDoServidor();
-            System.out.println("Recebido info: " + resposta);
+            System.out.println("Resultado da busca:\n" + resposta);
             socket.close();
 
         } catch (Exception e) {

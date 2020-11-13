@@ -18,8 +18,10 @@ public class ComunicacaoVolta extends Thread {
 
     public void run() {
         try {
-            String msgDeRetorno = receberMsgDaLoja();
-            System.out.println("Recebido da loja: " + msgDeRetorno);
+            String msgDeRetorno = "";
+            for (int i = 0; i < 3; i++) {
+                msgDeRetorno += receberMsgDaLoja() + "\n"; //recebe 3 vezes de cada loja e botar timeout
+            }
             enviarMsgParaCliente(msgDeRetorno);
 
         } catch (Exception e) {
@@ -28,7 +30,7 @@ public class ComunicacaoVolta extends Thread {
     }
 
     private String receberMsgDaLoja() throws IOException {
-        DatagramPacket retornoPacote = new DatagramPacket(new byte[512], 512);
+        DatagramPacket retornoPacote = new DatagramPacket(new byte[1024], 1024);
         socketLoja.receive(retornoPacote);
         return new String(retornoPacote.getData(), retornoPacote.getOffset(), retornoPacote.getLength());
     }

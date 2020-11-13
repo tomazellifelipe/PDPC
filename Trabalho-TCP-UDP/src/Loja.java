@@ -5,22 +5,25 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.util.Random;
 
 public class Loja {
 
+    private static int id;
+    private static int porta, index;
     private static Produto[] catalogo = new Produto[6];
-    private static int porta;
     private static MulticastSocket multiSocket;
     private static DatagramSocket socketServidor;
     private static InetAddress grupo, enderecoServidor;
-    private static int index;
 
-    public Loja() {
+    public Loja(int id) {
         popularCatalogo();
+        this.id = id;
     }
 
     public static void main(String[] args) {
-        Loja loja = new Loja();
+        Random r = new Random();
+        new Loja(r.nextInt(5));
         try {
             conexaoUDPComGrupo("224.0.0.1", 3000);
             conexaoUDPComServidor("127.0.0.1", 4545);
@@ -29,8 +32,10 @@ public class Loja {
                 String msgDoCliente = receberMsgDoGrupo();
                 System.out.println("Mensagem recebida pela Loja: " + msgDoCliente);
                 if(contemItem(msgDoCliente)) {
-                    enviarMsgParaServidor(catalogo[index].getNome() + " " + 
-                                          Float.toString(catalogo[index].getPreco())); 
+                    enviarMsgParaServidor(formatarMsgDeRetorno()); 
+                } else {
+                    enviarMsgParaServidor("Loja: " + id + "\n" + 
+                                          "\tProduto em falta");
                 }
             }
 
@@ -78,5 +83,13 @@ public class Loja {
             }            
         }
         return false;
+    }
+
+    private static String formatarMsgDeRetorno() {
+        String item = catalogo[index].getNome();
+        float preco = catalogo[index].getPreco();
+        return "Loja: " + id + "\n" +
+               "\tProd: " + item + "\n" +
+               "\tPreco: " + preco;
     }
 }
