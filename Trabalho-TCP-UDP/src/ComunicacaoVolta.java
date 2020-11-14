@@ -19,12 +19,13 @@ public class ComunicacaoVolta extends Thread {
     public void run() {
         try {
             String msgDeRetorno = "";
-            for (int i = 0; i < 3; i++) {
-                msgDeRetorno += receberMsgDaLoja() + "\n"; //recebe 3 vezes de cada loja e botar timeout
+            for (int i = 0; i < Loja.qtdLojas; i++) {
+                msgDeRetorno += receberMsgDaLoja() + "\n"; 
             }
             enviarMsgParaCliente(msgDeRetorno);
 
         } catch (Exception e) {
+            System.out.println("Timeout");
             e.printStackTrace();
         }
     }

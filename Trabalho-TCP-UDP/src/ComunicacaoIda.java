@@ -6,6 +6,7 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class ComunicacaoIda extends Thread {
 
@@ -13,14 +14,18 @@ public class ComunicacaoIda extends Thread {
     private MulticastSocket multiSocket;
     private InetAddress grupo;
     private int portaGrupo;
+    private ArrayList<String> logDePesquisas;
 
-    public ComunicacaoIda(Socket socket) {
+    public ComunicacaoIda(Socket socket, ArrayList<String> logDePesquisas) {
         this.socket = socket;
+        this.logDePesquisas = logDePesquisas;
     }
 
     public void run() {
         try {
             String pesquisa = receberMsgDoCliente();
+            String hashId = receberMsgDoCliente();
+            logDePesquisas.add(pesquisa + hashId);
             conexaoUDPComLoja("224.0.0.1", 3000);
             enviarMsgParaGrupo(pesquisa);
 
