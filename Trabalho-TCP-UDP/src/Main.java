@@ -8,7 +8,6 @@ public class Main {
         servidor.start();
         for (int i = 0; i < 3; i++) {
             new Loja(i).start();
-            
         }
     }
     

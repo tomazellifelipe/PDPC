@@ -32,10 +32,21 @@ public class Servidor extends Thread {
                 socketLoja.setSoTimeout(timeout);
                 socketCliente = socketServidor.accept();
                 if (ehAdmin()) {
-                    logDePesquisas.add("admin");
-                    enviarMsgParaAdmin(concatenarLog());
-                    enviarTimeoutParaAdmin();
-                    timeout = atualizarTimeout();
+                    int key = funcaoDesejada();
+                    switch (key) {
+                        case 1:
+                            logDePesquisas.add("admin");
+                            enviarMsgParaAdmin(concatenarLog());
+                            break;
+                        case 2:
+                            enviarTimeoutParaAdmin();   
+                            break;
+                        case 3:
+                            timeout = atualizarTimeout();
+                            break;
+                        default:
+                            break;
+                    }
 
                 } else {
                     String pesquisa = receberMsgDoCliente();
@@ -43,11 +54,9 @@ public class Servidor extends Thread {
                     logDePesquisas.add(pesquisa + hashId);
                     conexaoUDPComLoja("224.0.0.1", 3000);
                     enviarMsgParaGrupo(pesquisa);
-                    ComunicacaoVolta comsVolta = new ComunicacaoVolta(socketLoja, socketCliente);
+                    ComunicacaoVolta comsVolta = new ComunicacaoVolta(socketLoja, socketCliente, timeout);
                     comsVolta.start();
                 }
-                
-
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,7 +66,7 @@ public class Servidor extends Thread {
 
     private void conexaoUDPComLoja(String host, int port) throws IOException {
         grupo = InetAddress.getByName(host);
-        multiSocket = new MulticastSocket();
+        multiSocket = new MulticastSocket(port);
         portaGrupo = port;
     }
 
@@ -99,4 +108,8 @@ public class Servidor extends Thread {
         return entrada.readInt();
     }
 
+    private int funcaoDesejada() throws IOException {
+        DataInputStream entrada = new DataInputStream(socketCliente.getInputStream());
+        return entrada.readInt();
+    }
 }

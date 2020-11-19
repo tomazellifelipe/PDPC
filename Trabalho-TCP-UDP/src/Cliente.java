@@ -22,10 +22,11 @@ public class Cliente {
         Scanner input = new Scanner(System.in);
 
         try {
-            conexaoUTPComServidor("127.0.0.1", 5050);
             System.out.println("Procurar por: ");
+            String busca = input.nextLine();
+            conexaoUTPComServidor("127.0.0.1", 5050);
             enviarPermissao();
-            enviarMsgParaServidor(input.nextLine());
+            enviarMsgParaServidor(busca);
             enviarMsgParaServidor(Integer.toString(cli.id));
             System.out.println("Num do protocolo: " + cli.id);
             input.close();
