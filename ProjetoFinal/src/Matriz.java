@@ -5,7 +5,7 @@ import java.io.Serializable;
  */
 public class Matriz implements Serializable {
 
-    private double [] [] m;
+    private double[][] m;
     private int linhas;
     private int colunas;
 
@@ -17,5 +17,9 @@ public class Matriz implements Serializable {
 
     public void setMatrizFromCSV(String fileName) {
         this.m = CSVHandler.lerCSV(fileName, this.linhas, this.colunas);
+    }
+
+    public double[][] getMatriz() {
+        return m;
     }
 }

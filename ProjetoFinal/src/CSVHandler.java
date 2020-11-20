@@ -1,5 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * CSVHandler
@@ -34,5 +36,19 @@ public class CSVHandler {
             }            
         }
         return output;
+    }
+
+    public static void criarCSV(String fileName, double[][] matriz ) throws IOException {
+        FileWriter csvWriter = new FileWriter(fileName); 
+        for (double[] row : matriz) {
+            String[] line = new String[row.length];
+            for (int i = 0; i < line.length; i++) {
+                line[i] = String.valueOf(row[i]);
+            }
+            csvWriter.append(String.join(",", line));
+            csvWriter.append("\n");
+        }
+        csvWriter.flush();
+        csvWriter.close();
     }
 }

@@ -9,11 +9,11 @@ public class Application {
 
         final int totalProcessadores = Runtime.getRuntime().availableProcessors();
 
-        final int[][] matrizSetup = { { 1000, 1000, 1000 }, { 2000, 2000, 2000 }, 
+        final int[][] matrizSetup = { { 400, 400, 400 }, { 2000, 2000, 2000 }, 
                                       { 1000, 2000, 1000 }, { 2000, 4000, 2000 } };
 
         try {
-            // configurarSetup(matrizSetup);
+            configurarSetup(matrizSetup);
             
             for (int i = 0; i < 1; i++) {
 

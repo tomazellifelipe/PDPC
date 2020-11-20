@@ -1,5 +1,5 @@
-import java.io.IOException;
 import java.net.Socket;
+import java.util.concurrent.Semaphore;
 
 /**
  * Coordenador
@@ -16,9 +16,9 @@ public class Coordenador {
 
     public static void main(String[] args) {
         matrizA = new Matriz(linhas, colunas);
-        matrizA.setMatrizFromCSV("MatrizA.csv");
+        matrizA.setMatrizFromCSV("./src/matrizA.csv");
         matrizB = new Matriz(linhas, colunas);
-        matrizB.setMatrizFromCSV("MatrizB.csv");
+        matrizB.setMatrizFromCSV("./src/matrizB.csv");
         matrizC = new Matriz(linhas, colunas);
         Matriz[] matrizes = {matrizA, matrizB, matrizC};
         
@@ -31,18 +31,18 @@ public class Coordenador {
             inicio = fim;
             fim = inicio + passo;    
         }
+
+        Semaphore semaphore = new Semaphore(0);
         
         try {
             for (int i = 0; i < N_SERVIDORES; i++) {
                 sockets[i] = new Socket("localhost", ports[i]);
-                coms[i] = new Comunicacao(sockets[i], matrizes, parametros[i]);
+                coms[i] = new Comunicacao(sockets[i], matrizes, parametros[i], semaphore);
                 coms[i].start();
                 
             }
-            for (Comunicacao com : coms) {
-                com.join();
-            }
-            // salvar matriz C em arquivo
+            semaphore.acquire(N_SERVIDORES);
+            CSVHandler.criarCSV("./src/matrizC.csv", matrizes[2].getMatriz());
         } catch (Exception e) {
             e.printStackTrace();
         }
